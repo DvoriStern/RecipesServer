@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const userSchema= new mongoose.Schema({
     username:{type:String,required:true},
@@ -37,4 +38,12 @@ module.exports.userValidators={
         .minOfUppercase(1)
         .minOfSpecialCharacters(1)
     })
+}
+
+//creating the token
+module.exports.generateToken=(user)=>{
+    const privateKey=process.env.JWT_SECRET||'JWT_SECRET';// Secret string by which the token was created
+    const data={role:user.role,user_id:user._id};// The data that is relevant for user permissions
+    const token=jwt.sign(data,privateKey,{expiresIn:'1h'});// Create the token + expire
+    return token;
 }
