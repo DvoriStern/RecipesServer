@@ -2,10 +2,6 @@ const bcrypt = require('bcrypt');
 const { User, userValidators, generateToken } = require("../models/user.model");
 
 exports.signIn=async(req,res,next)=>{
-    const validation=userValidators.login.validate(req.body);
-    if(validation.error)
-        return next({message:validation.error.message})
-
     const {email,password}=req.body;
 
     const user=await User.findOne({email});
@@ -31,10 +27,13 @@ exports.signIn=async(req,res,next)=>{
 }
 
 exports.signUp=async(req,res,next)=>{
-    const { username, email, password,address } = req.body;
+    const { username, email, password,address,role } = req.body;
+    const validation=userValidators.login.validate({email,password});
+    if(validation.error)
+        return next({message:validation.error.message})
 
     try{
-        const user=new User({username,email,password,address});
+        const user=new User({username,email,password,address,role});
         await user.save();// first goes to action pre and there encrypts the password
         // If he succeeded in encrypting - tries to insert into the database
 

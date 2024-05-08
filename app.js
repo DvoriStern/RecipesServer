@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const userRouter = require("./routes/user.route");
 
+const { pageNotFound, serverNotFound } = require("./middlewares/handleErrors");
+
 //Reads all content from the file .env and puts its values into process.env
 require('dotenv').config();
 

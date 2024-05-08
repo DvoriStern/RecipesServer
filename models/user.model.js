@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
-const Joi = require('joi');
+const joi = require('joi');
+const { joiPasswordExtendCore } = require('joi-password');
+const joiPassword = joi.extend(joiPasswordExtendCore);
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -27,8 +29,8 @@ module.exports.User=mongoose.model('users',userSchema);
 
 //Validity check with the JOI library
 module.exports.userValidators={
-    login:Joi.object.keys({
-        email:Joi.string().email().required(),
+    login:joi.object().keys({
+        email:joi.string().email().required(),
         password:joiPassword
         .string().min(6).max(10)
         .minOfNumeric(3)
