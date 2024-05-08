@@ -2,10 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
-// process.env ומכניס את ערכיו לתוך .env קורא את כל התוכן מהקובץ
+//Reads all content from the file .env and puts its values into process.env
 require('dotenv').config();
 
-// חיבור למסד נתונים
+// Database connection
 require('./config/db');
 
 const app = express();
@@ -14,11 +14,14 @@ const app = express();
 app.use(express.json());// req.body for json data
 app.use(express.urlencoded({extended:true}));// req.body for form-data (with files)
 
-app.use(morgan("dev")); // הדפסת המידע של כל בקשה
-// app.use(cors({origin:'http:// localhost:4200'})); // אפשור רק לכתובת מסוימת
-app.use(cors());// אפשור גישה לכל הכתובות
+app.use(morgan("dev")); // Print the information of each request
+// app.use(cors({origin:'http:// localhost:4200'})); // Allow access only for a certain address
+app.use(cors());// Allow access to all addresses
 
 
+// If it got here - routing does not exist
+app.use(pageNotFound);
+app.use(serverNotFound);
 
 const port = process.env.PORT;
 app.listen(port, () => {
