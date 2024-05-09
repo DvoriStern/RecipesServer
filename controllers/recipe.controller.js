@@ -69,7 +69,8 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
 }
 
 exports.addRecipe = async (req, res, next) => {
-    
+    const { categoryname } = req.body;
+
     try {
         const recipe = new Recipe(req.body);
         await recipe.save();
@@ -79,29 +80,32 @@ exports.addRecipe = async (req, res, next) => {
     }
 }
 
-exports.updateRecipe=async(req,res,next)=>{
-    const id=req.params.id;
-    if(!mongoose.Types.ObjectId.isValid(id))
-        next({ message: 'id is not valid' })
-    try{
-        const recipe=await Recipe.findByIdAndUpdate(id,
-            {$set:req.body},
-            {new:true}
-        )
-        return res.json(recipe);
-    }catch (error) {
-        next(error);
-    }
-}
-
-exports.deleteRecipe=async(req,res,next)=>{
-    const id=req.params.id;
+exports.updateRecipe = async (req, res, next) => {
+    const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id))
         next({ message: 'id is not valid' })
-    else{
-        try{
-            if(!(await Recipe.findById(id)))
-                return next({message:"recipe not found!",status:404});
+    try {
+        const recipe = await Recipe.findByIdAndUpdate(id,
+            { $set: req.body },
+            { new: true }
+        )
+        return res.json(recipe);
+    }
+    catch (error) {
+        next(error);
+    }
+
+}
+
+
+exports.deleteRecipe = async (req, res, next) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id))
+        next({ message: 'id is not valid' })
+    else {
+        try {
+            if (!(await Recipe.findById(id)))
+                return next({ message: "recipe not found!", status: 404 });
             await Recipe.findByIdAndDelete(id);
             return res.status(204).send();
         } catch (error) {
