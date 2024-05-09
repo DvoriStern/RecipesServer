@@ -10,7 +10,6 @@ exports.getAllRecipes = async (req, res, next) => {
 
     try {
         const recipes = await Recipe.find({ name: new RegExp(search) })
-            .select('-__v')
             .skip((page - 1) * perPage)
             .limit(perPage)
             .select('-__v');
@@ -29,8 +28,8 @@ exports.getRecipeById = (req, res, next) => {
 
     else {
         Recipe.findById(id, { __v: false })
-            .then(c => {
-                res.json(c);
+            .then(r => {
+                res.json(r);
             })
             .catch(err => {
                 next({ message: 'recipe not found', status: 404 })
