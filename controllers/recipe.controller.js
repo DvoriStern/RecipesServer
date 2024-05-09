@@ -60,7 +60,7 @@ exports.getRecipesByUserId = async (req, res, next) => {
 exports.getRecipeByPreparationTime = async (req, res, next) => {
     const preparationTime = req.params.prepTime;
     try {
-        const recipes = await Recipe.find({ "preparationTime": preparationTime })
+        const recipes = await Recipe.find({ preparationTime: { $lte: preparationTime } })
             .select('-__v');
         return res.json(recipes);
     } catch (error) {
@@ -69,6 +69,7 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
 }
 
 exports.addRecipe = async (req, res, next) => {
+    
     try {
         const recipe = new Recipe(req.body);
         await recipe.save();
