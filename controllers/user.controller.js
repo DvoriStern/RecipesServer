@@ -18,6 +18,7 @@ exports.signIn=async(req,res,next)=>{
                 user.password="*****";
                 return res.send({user,token});                
             }
+            console.log(password,user.password);
             return next({ message: 'Auth Failed', status: 401 })
         })
     }

@@ -14,8 +14,8 @@ router.get('/byPrepTime/:prepTime',getRecipeByPreparationTime)
 
 router.post('/',auth,addRecipe);
 
-router.put('/:id',authAdminOrEditorUser,updateRecipe);
+router.put('/:id',auth,authAdminOrEditorUser,updateRecipe);
 
-router.delete('/:id',authAdminOrEditorUser,deleteRecipe);
+router.delete('/:id',auth,authAdminOrEditorUser,deleteRecipe);
 
 module.exports = router;

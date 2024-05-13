@@ -16,13 +16,9 @@ exports.auth=(req,res,next)=>{
     }
 }
 
+//checking if the user is admin - after extract the token in the middleware auth
 exports.authAdmin=(req,res,next)=>{
     try{
-        const {authorization}=req.headers;//extracting the token from the header
-        const[,token]=authorization.split(' ');
-        const privateKey=process.env.JWT_SECRET || 'JWT_SECRET';
-        const data=jwt.verify(token,privateKey);
-        req.user=data;
         if(req.user.role==="admin")
             next();
         else{
@@ -34,24 +30,19 @@ exports.authAdmin=(req,res,next)=>{
     }
 }
 
+//checking if the user is admin or the editor user - after extract the token in the middleware auth
 exports.authAdminOrEditorUser = async (req, res, next) => {
     try {
-        const { authorization } = req.headers;//extracting the token from the header
-        console.log(authorization);
-        const [, token] = authorization.split(' ');
-        const privateKey = process.env.JWT_SECRET || 'JWT_SECRET'; // secret string by which the token was created
-        const data = jwt.verify(token, privateKey);// the data that the token contains
-        req.user = data;//adding an data to the request
-        let recipeId = req.params.id;
+        const recipeId = req.params.id;
         //The recipe that requires authorization
-        let recipe = await Recipe.findById(recipeId).then(r => {
+        const recipe = await Recipe.findById(recipeId).then(r => {
             return r;
         })
         .catch(err => {
             next({ message: 'recipe not found', status: 404 })
         });
 
-        if (data.role == "admin"||recipe && recipe.user._id.toString()===data.user_id.toString())
+        if (req.user.role == "admin"||recipe && recipe.user._id.toString()===req.user.user_id.toString())
             next(); // moving to Route/Middlewar
         else
             next({ message: 'You are not allowed to edit this recipe', status: 403 });
