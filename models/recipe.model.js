@@ -6,7 +6,7 @@ const layerSchema = new mongoose.Schema({
 });
 
 const userOwnSchema = new mongoose.Schema({
-    _id: { type:mongoose.Types.ObjectId,required:true},
+    _id: { type:mongoose.Types.ObjectId,ref: 'user',required:true },
     name: { type: String,required:true,minlength:2 }
 });
 

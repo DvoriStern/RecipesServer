@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 
 const recipeSchema=new mongoose.Schema({
-    _id:{type:mongoose.Types.ObjectId,required:true},
+    _id:{type:mongoose.Types.ObjectId,ref:'recipe',required:true},
     name:{type:String,required:true}
 })
 const categorySchema=new mongoose.Schema({
