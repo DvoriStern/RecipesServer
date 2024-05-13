@@ -8,7 +8,7 @@ router.get('/',getAllRecipes);
 
 router.get('/:id',getRecipeById);
 
-router.get('/byUserId/:userid',getRecipesByUserId);
+router.get('/byUserId/:userid',auth,getRecipesByUserId);
 
 router.get('/byPrepTime/:prepTime',getRecipeByPreparationTime)
 

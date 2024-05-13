@@ -13,7 +13,7 @@ const userOwnSchema = new mongoose.Schema({
 const recipeSchema= new mongoose.Schema({
     name:{type:String,required:true,minlength:2},
     description:{type:String},
-    categoryname:{type:[String],required:true,minlength:2},
+    categorynames:{type:[String],required:true,minlength:2},
     preparationTime:{type:Number},
     difficulty: { type: Number,min:1,max:5,default:1},
     dateAdded:{type:Date,default:new Date()},

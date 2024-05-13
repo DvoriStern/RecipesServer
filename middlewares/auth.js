@@ -43,7 +43,7 @@ exports.authAdminOrEditorUser = async (req, res, next) => {
         });
 
         if (req.user.role == "admin"||recipe && recipe.user._id.toString()===req.user.user_id.toString())
-            next(); // moving to Route/Middlewar
+            next(); // moving to Route/Middleware
         else
             next({ message: 'You are not allowed to edit this recipe', status: 403 });
     } catch (err) {

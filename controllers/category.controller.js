@@ -3,7 +3,7 @@ const { Category } = require("../models/category.model");
 exports.getAllCategories=async(req,res,next)=>{
     try {
         const categories = await Category.find()
-            .select('-__v -recipes');
+            .select('-__v');
         return res.json(categories);
     }
     catch (err) {
